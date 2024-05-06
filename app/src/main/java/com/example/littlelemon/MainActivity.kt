@@ -29,52 +29,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    Nav()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    var firstNameText by remember { mutableStateOf("first name") }
-    var lastNameText by remember { mutableStateOf("last name") }
-    var emailAddressText by remember { mutableStateOf("email address") }
-    Column {
-        Image(modifier = Modifier.size(300.dp),
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Cartoon of dog")
-        Text(
-            style = TextStyle(background = Color.Yellow),
-            modifier = Modifier.padding(20.dp),
-            text = "Let's get to know you",
-            fontSize = 24.sp)
-        TextField(
-            value = firstNameText,
-            onValueChange = { firstNameText = it },
-            label = { Text("First Name") }
-        )
-        TextField(
-            value = lastNameText,
-            onValueChange = { lastNameText = it },
-            label = { Text("Last Name") }
-        )
-        TextField(
-            value = emailAddressText,
-            onValueChange = { emailAddressText = it },
-            label = { Text("Email") }
-        )
-        Button(onClick = {  }) {
-            Text("Register")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LittlelemonTheme {
-        Greeting("Android")
-    }
-}
