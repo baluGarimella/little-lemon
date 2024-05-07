@@ -1,5 +1,6 @@
 package com.example.littlelemon
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -18,6 +20,9 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun Onboarding(navController: NavHostController) {
+    val context: Context = LocalContext.current
+    val preferencesManager = remember { PreferencesManager(context) }
+
     var firstNameText by remember { mutableStateOf("first name") }
     var lastNameText by remember { mutableStateOf("last name") }
     var emailAddressText by remember { mutableStateOf("email address") }
@@ -45,7 +50,11 @@ fun Onboarding(navController: NavHostController) {
             onValueChange = { emailAddressText = it },
             label = { Text("Email") }
         )
-        Button(onClick = { navController.navigate(Home.route) }) {
+        Button(onClick = {
+            preferencesManager.firstName = firstNameText
+            preferencesManager.lastName = lastNameText
+            preferencesManager.email = emailAddressText
+            navController.navigate(Home.route) }) {
             Text("Register")
         }
     }
