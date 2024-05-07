@@ -45,7 +45,7 @@ fun Onboarding(navController: NavHostController) {
             onValueChange = { emailAddressText = it },
             label = { Text("Email") }
         )
-        Button(onClick = {  }) {
+        Button(onClick = { navController.navigate(Home.route) }) {
             Text("Register")
         }
     }
