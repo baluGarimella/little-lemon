@@ -23,9 +23,10 @@ fun Onboarding(navController: NavHostController) {
     val context: Context = LocalContext.current
     val preferencesManager = remember { PreferencesManager(context) }
 
-    var firstNameText by remember { mutableStateOf("first name") }
-    var lastNameText by remember { mutableStateOf("last name") }
-    var emailAddressText by remember { mutableStateOf("email address") }
+    var firstNameText by remember { mutableStateOf("") }
+    var lastNameText by remember { mutableStateOf("") }
+    var emailAddressText by remember { mutableStateOf("") }
+    var errorText by remember { mutableStateOf("") }
     Column {
         Image(modifier = Modifier.size(300.dp),
             painter = painterResource(id = R.drawable.logo),
@@ -38,7 +39,7 @@ fun Onboarding(navController: NavHostController) {
         TextField(
             value = firstNameText,
             onValueChange = { firstNameText = it },
-            label = { Text("First Name") }
+            label = { Text("First Name") },
         )
         TextField(
             value = lastNameText,
@@ -51,11 +52,21 @@ fun Onboarding(navController: NavHostController) {
             label = { Text("Email") }
         )
         Button(onClick = {
-            preferencesManager.firstName = firstNameText
-            preferencesManager.lastName = lastNameText
-            preferencesManager.email = emailAddressText
-            navController.navigate(Home.route) }) {
+            if (firstNameText.isNotBlank() || lastNameText.isNotBlank() || emailAddressText.isNotBlank()) {
+                preferencesManager.firstName = firstNameText
+                preferencesManager.lastName = lastNameText
+                preferencesManager.email = emailAddressText
+                navController.navigate(Home.route)
+            } else {
+                errorText = "Registration unsuccessful. Please enter all data."
+            }
+            }) {
             Text("Register")
         }
+        Text(
+            text = errorText,
+            color = Color.Red,
+        )
+
     }
 }
