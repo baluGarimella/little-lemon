@@ -26,10 +26,10 @@ fun Home(navController: NavHostController) {
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Cartoon of dog")
 
+        Image(modifier = Modifier.size(300.dp),
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Cartoon of dog")
+
     }
-    Text(
-        style = TextStyle(background = Color.Yellow),
-        modifier = Modifier.padding(20.dp),
-        text = preferencesManager.firstName+"=="+preferencesManager.lastName+"==="+preferencesManager.email,
-        fontSize = 24.sp)
+
 }
