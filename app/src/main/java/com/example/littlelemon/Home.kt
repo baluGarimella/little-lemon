@@ -2,6 +2,7 @@ package com.example.littlelemon
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,10 +27,9 @@ fun Home(navController: NavHostController) {
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Cartoon of dog")
 
-        Image(modifier = Modifier.size(300.dp),
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Cartoon of dog")
-
+        Image(modifier = Modifier.clickable { navController.navigate(Profile.route)},
+              painter = painterResource(id = R.drawable.profile),
+              contentDescription = "Cartoon of profile")
     }
 
 }
