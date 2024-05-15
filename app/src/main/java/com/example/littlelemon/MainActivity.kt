@@ -3,6 +3,7 @@ package com.example.littlelemon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import io.ktor.http.ContentType
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,17 +24,31 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittlelemonTheme
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val responseLiveData = MutableLiveData<String>()
-    private val httpClient = HttpClient(Android)
+    private val menuItemsLiveData = MutableLiveData<MenuNetworkData>()
+    private val httpClient = HttpClient(Android) {
+        install(ContentNegotiation) {
+            json(contentType = ContentType("text", "plain"))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            val menuItems = getMenu()
+
+            runOnUiThread {
+                menuItemsLiveData.value = menuItems
+            }
+        }
         setContent {
             LittlelemonTheme {
                 // A surface container using the 'background' color from the theme
@@ -41,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val responseState = responseLiveData.observeAsState("").value
+                    val responseState = menuItemsLiveData.observeAsState("").value
 
                    // val navController = rememberNavController()
                   // Navigation(navController = navController)
@@ -49,9 +64,9 @@ class MainActivity : ComponentActivity() {
                         Button(
                             onClick = {
                                 lifecycleScope.launch {
-                                    val response = fetchContent()
+                                    val response = getMenu()
                                     runOnUiThread {
-                                        responseLiveData.value = response
+                                        menuItemsLiveData.value = response
                                     }
                                 }
                             }
@@ -65,10 +80,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    private suspend fun fetchContent(): String {
+   /* private suspend fun fetchContent(): String {
         return httpClient
             .get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
             .bodyAsText()
+    }*/
+    private suspend fun getMenu(): MenuNetworkData {
+        return httpClient
+            .get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
+            .body()
     }
+    /*private suspend fun getMenu(category: String): List<String> {
+        val response: Map<String, MenuCategory> =
+            client.get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/littleLemonMenu.json")
+                .body()
+
+        return response[category]?.menu ?: listOf()
+    }
+    */
 }
 
