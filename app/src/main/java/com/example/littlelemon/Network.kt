@@ -1,19 +1,31 @@
 package com.example.littlelemon
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MenuNetworkData (
 
-    val menu: List<MenuItemNetwork>
-        )
+data class MenuNetwork(
+
+    @SerialName("menu")
+    val menu: List<MenuItemNetwork>,
+
+    )
 
 @Serializable
-data class MenuItemNetwork (
-    val id : Int,
-    val title : String,
-    val description : String,
-    val price : Double,
-    val category : String
 
-        )
+data class MenuItemNetwork(
+
+    @SerialName("id")
+    val id: Int,
+
+    @SerialName("title")
+    val title: String,
+
+    @SerialName("price")
+    val price: Double,
+
+    ) {
+
+
+}

@@ -33,7 +33,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val menuItemsLiveData = MutableLiveData<MenuNetworkData>()
+    private val menuItemsLiveData = MutableLiveData<MenuNetwork>()
     private val httpClient = HttpClient(Android) {
         install(ContentNegotiation) {
             json(contentType = ContentType("text", "plain"))
@@ -85,9 +85,9 @@ class MainActivity : ComponentActivity() {
             .get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
             .bodyAsText()
     }*/
-    private suspend fun getMenu(): MenuNetworkData {
+    private suspend fun getMenu(): MenuNetwork {
         return httpClient
-            .get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
+            .get(" https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/littleLemonSimpleMenu.json")
             .body()
     }
     /*private suspend fun getMenu(category: String): List<String> {
